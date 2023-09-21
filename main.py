@@ -1,27 +1,12 @@
-# /docs: /docs접속시 API 문서 자동 생성
-# redocs: 문서 변경
-
+from typing import Union
 from fastapi import FastAPI
+
 app = FastAPI()
 
-from fastapi.responses import FileResponse 
-
-# 페이지 접속시 메시지 출력
 @app.get("/")
-def print_message():
-    return FileResponse('index.html')
+def read_root():
+    return {"Hello":"World"}
 
-@app.get("/data")
-def print_message():
-    return {'hello':1234} 
-
-# 유저에게 데이터 수신
-from pydantic import BaseModel
-class your_info(BaseModel):
-    name : str
-    phone : str
-
-@app.post("/send")
-def info(data : your_info):
-    print(data)
-    return '입력이 완료되었습니다.'
+@app.get("/items/{items_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
